@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AgriAssist Farmer Dashboard</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+
+    body{
+    margin:0;
+    font-family:Arial, sans-serif;
+    background: linear-gradient(135deg,#2e7d32,#81c784);
+}
+
+.container{
+    display:flex;
+    min-height:100vh;
+}
+
+/* SIDEBAR */
+.sidebar{
+    width:240px;
+    background:#1b5e20;
+    color:white;
+    padding:20px;
+}
+
+.sidebar li{
+    list-style:none;
+    padding:12px;
+    margin:10px 0;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.sidebar li:hover{
+    background:#2e7d32;
+}
+
+.logout{
+    background:#b71c1c;
+}
+
+/* MAIN */
+.main{
+    flex:1;
+    padding:30px;
+    background:#f4f6f9;
+}
+
+.section{
+    display:none;
+}
+
+.section.active{
+    display:block;
+}
+
+/* DASHBOARD */
+.grid{
+    display:grid;
+    grid-template-columns: repeat(2,1fr);
+    gap:20px;
+}
+
+.card{
+    background:white;
+    padding:25px;
+    border-radius:15px;
+    cursor:pointer;
+}
+
+/* COLUMN HEADERS */
+.columns{
+    display:grid;
+    grid-template-columns: repeat(auto-fit,minmax(150px,1fr));
+    gap:15px;
+    margin-top:20px;
+}
+
+.col{
+    background:#e8f5e9;
+    padding:15px;
+    border-radius:10px;
+    font-weight:bold;
+    text-align:center;
+    color:#2e7d32;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <h2>🌾 Farmer Panel</h2>
+        <ul>
+            <li onclick="showSection('dashboard')">🏠 Dashboard</li>
+            <li onclick="showSection('weather')">🌦 Weather</li>
+            <li onclick="showSection('mandi')">📈 Mandi Rates</li>
+            <li onclick="showSection('expert')">👨‍🌾 Expert Support</li>
+            <li onclick="showSection('schemes')">🏛 Govt Schemes</li>
+            <li onclick="showSection('tips')">🌱 Farming Tips</li>
+            <li class="logout" onclick="logout()">🚪 Logout</li>
+        </ul>
+    </div>
+
+    <!-- MAIN -->
+    <div class="main">
+
+        <div class="topbar">
+            <h2>Modern Agriculture Assistance System</h2>
+        </div>
+
+        <!-- DASHBOARD -->
+        <div id="dashboard" class="section active">
+            <div class="grid">
+                <div class="card" onclick="openFromDashboard('weather')">
+                    <h3>🌦 Weather</h3>
+                </div>
+                <div class="card" onclick="openFromDashboard('mandi')">
+                    <h3>📈 Mandi Rates</h3>
+                </div>
+                <div class="card" onclick="openFromDashboard('expert')">
+                    <h3>👨‍🌾 Expert Support</h3>
+                </div>
+                <div class="card" onclick="openFromDashboard('schemes')">
+                    <h3>🏛 Govt Schemes</h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- WEATHER (COLUMNS ONLY) -->
+        <div id="weather" class="section">
+            <h2>Weather Report</h2>
+            <div class="columns">
+                <div class="col">Location</div>
+                <div class="col">Temperature</div>
+                <div class="col">Humidity</div>
+                <div class="col">Rainfall</div>
+                <div class="col">Wind Speed</div>
+                <div class="col">Date</div>
+            </div>
+        </div>
+
+        <!-- MANDI (COLUMNS ONLY) -->
+        <div id="mandi" class="section">
+            <h2>Mandi Rates</h2>
+            <div class="columns">
+                <div class="col">Crop Name</div>
+                <div class="col">Market Name</div>
+                <div class="col">Price (₹/Quintal)</div>
+                <div class="col">Price Trend</div>
+                <div class="col">Date</div>
+            </div>
+        </div>
+
+        <!-- EXPERT (COLUMNS ONLY) -->
+        <div id="expert" class="section">
+            <h2>Expert Support</h2>
+            <div class="columns">
+                <div class="col">Expert Name</div>
+                <div class="col">Specialization</div>
+                <div class="col">Experience</div>
+                <div class="col">Contact Method</div>
+                <div class="col">Availability</div>
+            </div>
+        </div>
+
+        <!-- SCHEMES (COLUMNS ONLY) -->
+        <div id="schemes" class="section">
+            <h2>Government Schemes</h2>
+            <div class="columns">
+                <div class="col">Scheme Name</div>
+                <div class="col">Department</div>
+                <div class="col">Eligibility</div>
+                <div class="col">Benefits</div>
+                <div class="col">Apply Link</div>
+            </div>
+        </div>
+
+        <!-- TIPS (COLUMNS ONLY) -->
+        <div id="tips" class="section">
+            <h2>Farming Tips</h2>
+            <div class="columns">
+                <div class="col">Tip Category</div>
+                <div class="col">Crop Type</div>
+                <div class="col">Season</div>
+                <div class="col">Recommended Practice</div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+
+function showSection(id){
+    document.querySelectorAll(".section")
+        .forEach(sec => sec.classList.remove("active"));
+    document.getElementById(id).classList.add("active");
+}
+
+function openFromDashboard(id){
+    showSection(id);
+}
+
+function logout(){
+    if(confirm("Are you sure you want to logout?")){
+        window.location.href = "login.html";
+    }
+}
+
+</script>
+</body>
+</html>
