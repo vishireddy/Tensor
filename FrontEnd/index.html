@@ -51,6 +51,12 @@ body{
     text-align:center;
 }
 
+/* RECAPTCHA */
+.recaptcha-hidden{
+    display:none;
+}
+
+
 /* ROLE SELECTOR */
 .role-tabs{
     display:flex;
@@ -153,6 +159,9 @@ button.main-btn{
 
 <div class="login-box">
 
+    <div id="recaptcha-container" class="recaptcha-hidden"></div>
+
+
     <!-- LANGUAGE -->
     <div id="google_translate_element" style="margin-bottom:15px;"></div>
 
@@ -188,55 +197,95 @@ button.main-btn{
 
 </div>
 
+<!-- FIREBASE -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT.firebaseapp.com",
+    projectId: "YOUR_PROJECT_ID",
+    appId: "YOUR_APP_ID"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+</script>
+
+
 <script>
 let currentRole = "Farmer";
+const auth = firebase.auth();
+let confirmationResult;
 
-function setRole(role,btn){
-    currentRole = role;
+// Initialize invisible reCAPTCHA
+window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier(
+  'recaptcha-container',
+  { size: 'invisible' }
+);
 
-    document.getElementById("roleTitle").innerText = role + " Login";
+function setRole(role, btn) {
+  currentRole = role;
 
-    document.getElementById("roleText").innerText =
-        role === "Admin"
-        ? "Admin access to manage platform"
-        : "Login using your mobile number";
+  document.getElementById("roleTitle").innerText = role + " Login";
+  document.getElementById("roleText").innerText =
+    role === "Admin"
+      ? "Admin access to manage platform"
+      : "Login using your mobile number";
 
-    document.querySelectorAll(".role-tabs button")
-        .forEach(b => b.classList.remove("active"));
+  document.querySelectorAll(".role-tabs button")
+    .forEach(b => b.classList.remove("active"));
 
-    btn.classList.add("active");
-
-    document.getElementById("otpSection").style.display = "none";
+  btn.classList.add("active");
+  document.getElementById("otpSection").style.display = "none";
 }
 
-function sendOTP(){
-    const mobile = document.getElementById("mobile").value;
+function sendOTP() {
+  const mobile = document.getElementById("mobile").value;
 
-    if(mobile.length !== 10){
-        alert("Please enter a valid 10-digit mobile number");
-        return;
-    }
+  if (mobile.length !== 10) {
+    alert("Enter valid 10-digit mobile number");
+    return;
+  }
 
-    alert(currentRole + " OTP sent (Demo OTP: 1234)");
-    document.getElementById("otpSection").style.display = "block";
-}
-function verifyOTP(){
-    const otp = document.getElementById("otp").value;
+  const phoneNumber = "+91" + mobile;
 
-    if(otp === "1234"){
-        alert(currentRole + " login successful!");
-        // redirect based on role
-        // example:
-        // if(currentRole==="Admin") window.location.href="admin.html";
-    } else {
-        alert("Invalid OTP");
-    }
+  auth.signInWithPhoneNumber(phoneNumber, window.recaptchaVerifier)
+    .then((result) => {
+      confirmationResult = result;
+      alert("OTP sent successfully");
+      document.getElementById("otpSection").style.display = "block";
+    })
+    .catch((error) => {
+      alert(error.message);
+    });
 }
 
-function goBack(){
-    window.history.back();
+function verifyOTP() {
+  const otp = document.getElementById("otp").value;
+
+  confirmationResult.confirm(otp)
+    .then((result) => {
+      alert(currentRole + " login successful!");
+
+      // 🔥 Role-based redirect (optional)
+      /*
+      if (currentRole === "Admin") window.location.href = "admin.html";
+      else if (currentRole === "Farmer") window.location.href = "farmer.html";
+      */
+
+      console.log(result.user.phoneNumber);
+    })
+    .catch(() => {
+      alert("Invalid OTP");
+    });
+}
+
+function goBack() {
+  window.history.back();
 }
 </script>
+
 
 <!-- GOOGLE TRANSLATE -->
 <script type="text/javascript">
