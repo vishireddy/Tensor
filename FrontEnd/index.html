@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Farming Platform | Login</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)), url("bg1.jpeg");
+    background-size: cover;
+
+}
+
+/* PAGE HEADER */
+.page-header{
+    position:absolute;
+    top:25px;
+    text-align:center;
+}
+
+.page-header h1{
+    color:#07a346;
+    font-size:1.9rem;
+}
+
+.page-header p{
+    color:#4d9e6c;
+    font-size:0.95rem;
+}
+
+/* LOGIN BOX */
+.login-box{
+    background:#ffffff;
+    width:100%;
+    max-width:420px;
+    padding:30px 26px;
+    border-radius:22px;
+    box-shadow:0 15px 35px rgba(0,0,0,0.15);
+    text-align:center;
+}
+
+/* ROLE SELECTOR */
+.role-tabs{
+    display:flex;
+    gap:8px;
+    margin-bottom:18px;
+}
+
+.role-tabs button{
+    flex:1;
+    padding:10px;
+    border-radius:12px;
+    border:1px solid #bbf7d0;
+    background:#ecfdf5;
+    cursor:pointer;
+    font-size:0.85rem;
+    color:#14532d;
+}
+
+.role-tabs button.active{
+    background:#22c55e;
+    color:white;
+}
+
+/* TITLES */
+.login-box h2{
+    color:#14532d;
+    margin-bottom:6px;
+}
+
+.subtext{
+    font-size:0.9rem;
+    color:#4b5563;
+    margin-bottom:18px;
+}
+
+/* INPUT */
+.input-group{
+    text-align:left;
+    margin-bottom:18px;
+}
+
+.input-group label{
+    font-size:0.85rem;
+    color:#374151;
+    font-weight:bold;
+}
+
+.input-group input{
+    width:100%;
+    padding:14px;
+    margin-top:6px;
+    font-size:1rem;
+    border-radius:12px;
+    border:1.5px solid #bbf7d0;
+    outline:none;
+}
+
+/* BUTTON */
+button.main-btn{
+    width:100%;
+    background:#22c55e;
+    border:none;
+    color:white;
+    padding:14px;
+    border-radius:14px;
+    font-size:1rem;
+    cursor:pointer;
+}
+
+/* OTP SECTION */
+#otpSection{
+    display:none;
+    margin-top:15px;
+    border-top:1px dashed #bbf7d0;
+    padding-top:15px;
+}
+
+.back{
+    margin-top:16px;
+    font-size:0.85rem;
+    color:#166534;
+    cursor:pointer;
+}
+
+/* GOOGLE TRANSLATE CLEANUP */
+.goog-logo-link,
+.goog-te-gadget span {
+    display:none !important;
+}
+.goog-te-gadget { font-size:0; }
+</style>
+</head>
+
+<body>
+
+<div class="page-header">
+    <h1>🌱 Smart Farming Platform</h1>
+    <pre>         Gamified Sustainable Agriculture System</pre>
+</div>
+
+<div class="login-box">
+
+    <!-- LANGUAGE -->
+    <div id="google_translate_element" style="margin-bottom:15px;"></div>
+
+    <!-- ROLE SELECTION -->
+    <div class="role-tabs">
+        <button class="active" onclick="setRole('Farmer',this)">Farmer</button>
+        <button onclick="setRole('Dealer',this)">Dealer</button>
+        <button onclick="setRole('Customer',this)">Customer</button>
+        <button onclick="setRole('Admin',this)">Admin</button>
+    </div>
+
+    <h2 id="roleTitle">Farmer Login</h2>
+    <p class="subtext" id="roleText">Login using your mobile number</p>
+
+    <!-- MOBILE -->
+    <div class="input-group">
+        <label>📱 Mobile Number</label>
+        <input type="tel" id="mobile" placeholder="Enter 10-digit number" maxlength="10">
+    </div>
+
+    <button class="main-btn" onclick="sendOTP()">Get OTP</button>
+
+    <!-- OTP -->
+    <div id="otpSection">
+        <div class="input-group">
+            <label>🔐 Enter OTP</label>
+            <input type="number" id="otp" placeholder="Enter OTP">
+        </div>
+        <button class="main-btn" onclick="verifyOTP()">Login</button>
+    </div>
+
+    <div class="back" onclick="goBack()">← Back</div>
+
+</div>
+
+<script>
+let currentRole = "Farmer";
+
+function setRole(role,btn){
+    currentRole = role;
+
+    document.getElementById("roleTitle").innerText = role + " Login";
+
+    document.getElementById("roleText").innerText =
+        role === "Admin"
+        ? "Admin access to manage platform"
+        : "Login using your mobile number";
+
+    document.querySelectorAll(".role-tabs button")
+        .forEach(b => b.classList.remove("active"));
+
+    btn.classList.add("active");
+
+    document.getElementById("otpSection").style.display = "none";
+}
+
+function sendOTP(){
+    const mobile = document.getElementById("mobile").value;
+
+    if(mobile.length !== 10){
+        alert("Please enter a valid 10-digit mobile number");
+        return;
+    }
+
+    alert(currentRole + " OTP sent (Demo OTP: 1234)");
+    document.getElementById("otpSection").style.display = "block";
+}
+function verifyOTP(){
+    const otp = document.getElementById("otp").value;
+
+    if(otp === "1234"){
+        alert(currentRole + " login successful!");
+        // redirect based on role
+        // example:
+        // if(currentRole==="Admin") window.location.href="admin.html";
+    } else {
+        alert("Invalid OTP");
+    }
+}
+
+function goBack(){
+    window.history.back();
+}
+</script>
+
+<!-- GOOGLE TRANSLATE -->
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement(
+    {
+      pageLanguage: 'en',
+      includedLanguages: 'en,hi,te,ta,kn,ml,gu,pa'
+    },
+    'google_translate_element'
+  );
+}
+</script>
+
+<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+</body>
+</html>
