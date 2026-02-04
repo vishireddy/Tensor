@@ -1,95 +1,68 @@
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AgriAssist Farmer Dashboard</title>
+<title>AgriAssist – Farmer ONDC Seller</title>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
-
-    body{
+body{
     margin:0;
-    font-family:Arial, sans-serif;
+    font-family: Arial, sans-serif;
     background: linear-gradient(135deg,#2e7d32,#81c784);
 }
-
-.container{
-    display:flex;
-    min-height:100vh;
-}
-
-/* SIDEBAR */
+.container{display:flex;min-height:100vh;}
 .sidebar{
-    width:240px;
-    background:#1b5e20;
-    color:white;
-    padding:20px;
+    width:240px;background:#1b5e20;color:white;padding:20px;
 }
-
+.sidebar h2{text-align:center;}
 .sidebar li{
-    list-style:none;
-    padding:12px;
-    margin:10px 0;
-    border-radius:8px;
-    cursor:pointer;
+    list-style:none;padding:14px;margin:12px 0;
+    border-radius:10px;cursor:pointer;font-size:16px;
 }
+.sidebar li:hover{background:#2e7d32;}
+.logout{background:#b71c1c;}
+.main{flex:1;padding:30px;background:#f4f6f9;}
+.section{display:none;}
+.section.active{display:block;}
 
-.sidebar li:hover{
-    background:#2e7d32;
-}
-
-.logout{
-    background:#b71c1c;
-}
-
-/* MAIN */
-.main{
-    flex:1;
-    padding:30px;
-    background:#f4f6f9;
-}
-
-.section{
-    display:none;
-}
-
-.section.active{
-    display:block;
-}
-
-/* DASHBOARD */
 .grid{
     display:grid;
-    grid-template-columns: repeat(2,1fr);
+    grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
     gap:20px;
 }
-
 .card{
-    background:white;
-    padding:25px;
-    border-radius:15px;
-    cursor:pointer;
+    background:white;padding:30px;border-radius:18px;
+    text-align:center;cursor:pointer;
+    box-shadow:0 4px 8px rgba(0,0,0,0.1);
 }
+.card:hover{transform:scale(1.05);}
 
-/* COLUMN HEADERS */
 .columns{
     display:grid;
     grid-template-columns: repeat(auto-fit,minmax(150px,1fr));
-    gap:15px;
-    margin-top:20px;
+    gap:15px;margin-top:20px;
 }
-
 .col{
-    background:#e8f5e9;
-    padding:15px;
-    border-radius:10px;
-    font-weight:bold;
-    text-align:center;
-    color:#2e7d32;
+    background:#e8f5e9;padding:15px;
+    border-radius:12px;text-align:center;
+    font-weight:bold;color:#1b5e20;
 }
 
+input,button{
+    padding:10px;margin:6px;
+    border-radius:8px;border:1px solid #ccc;
+}
+button{
+    background:#2e7d32;color:white;
+    border:none;cursor:pointer;
+}
+button:hover{background:#1b5e20;}
 </style>
 </head>
 
@@ -97,126 +70,248 @@
 
 <div class="container">
 
-    <!-- SIDEBAR -->
-    <div class="sidebar">
-        <h2>🌾 Farmer Panel</h2>
-        <ul>
-            <li onclick="showSection('dashboard')">🏠 Dashboard</li>
-            <li onclick="showSection('weather')">🌦 Weather</li>
-            <li onclick="showSection('mandi')">📈 Mandi Rates</li>
-            <li onclick="showSection('expert')">👨‍🌾 Expert Support</li>
-            <li onclick="showSection('schemes')">🏛 Govt Schemes</li>
-            <li onclick="showSection('tips')">🌱 Farming Tips</li>
-            <li class="logout" onclick="logout()">🚪 Logout</li>
-        </ul>
-    </div>
+<!-- SIDEBAR -->
+<div class="sidebar">
+    <h2>🌾 Farmer Panel</h2>
+    <ul>
+        <li onclick="showSection('dashboard')">🏠 Dashboard</li>
+        <li onclick="showSection('ondc')">🛒 Sell on ONDC</li>
+        <li onclick="showSection('weather')">🌦 Weather</li>
+        <li onclick="showSection('mandi')">📈 Mandi Rates</li>
+        <li onclick="showSection('schemes')">🏛 Govt Schemes</li>
+        <li class="logout">
+    <a href="index.html" style="color:white;text-decoration:none;display:block;">
+        🚪 Logout
+    </a>
+</li>
 
-    <!-- MAIN -->
-    <div class="main">
+    </ul>
+</div>
 
-        <div class="topbar">
-            <h2>Modern Agriculture Assistance System</h2>
+<!-- MAIN -->
+<div class="main">
+
+<h2>Modern Agriculture Assistance System</h2>
+
+<!-- DASHBOARD -->
+<div id="dashboard" class="section active">
+    <div class="grid">
+        <div class="card" onclick="showSection('ondc')">
+            <h3>🛒 Sell Crops on ONDC</h3>
+            <p>No middlemen</p>
         </div>
-
-        <!-- DASHBOARD -->
-        <div id="dashboard" class="section active">
-            <div class="grid">
-                <div class="card" onclick="openFromDashboard('weather')">
-                    <h3>🌦 Weather</h3>
-                </div>
-                <div class="card" onclick="openFromDashboard('mandi')">
-                    <h3>📈 Mandi Rates</h3>
-                </div>
-                <div class="card" onclick="openFromDashboard('expert')">
-                    <h3>👨‍🌾 Expert Support</h3>
-                </div>
-                <div class="card" onclick="openFromDashboard('schemes')">
-                    <h3>🏛 Govt Schemes</h3>
-                </div>
-            </div>
+        <div class="card" onclick="showSection('weather')">
+            <h3>🌦 Weather</h3>
         </div>
-
-        <!-- WEATHER (COLUMNS ONLY) -->
-        <div id="weather" class="section">
-            <h2>Weather Report</h2>
-            <div class="columns">
-                <div class="col">Location</div>
-                <div class="col">Temperature</div>
-                <div class="col">Humidity</div>
-                <div class="col">Rainfall</div>
-                <div class="col">Wind Speed</div>
-                <div class="col">Date</div>
-            </div>
+        <div class="card" onclick="showSection('mandi')">
+            <h3>📈 Mandi Prices</h3>
         </div>
-
-        <!-- MANDI (COLUMNS ONLY) -->
-        <div id="mandi" class="section">
-            <h2>Mandi Rates</h2>
-            <div class="columns">
-                <div class="col">Crop Name</div>
-                <div class="col">Market Name</div>
-                <div class="col">Price (₹/Quintal)</div>
-                <div class="col">Price Trend</div>
-                <div class="col">Date</div>
-            </div>
+        <div class="card" onclick="showSection('schemes')">
+            <h3>🏛 Govt Schemes</h3>
         </div>
-
-        <!-- EXPERT (COLUMNS ONLY) -->
-        <div id="expert" class="section">
-            <h2>Expert Support</h2>
-            <div class="columns">
-                <div class="col">Expert Name</div>
-                <div class="col">Specialization</div>
-                <div class="col">Experience</div>
-                <div class="col">Contact Method</div>
-                <div class="col">Availability</div>
-            </div>
-        </div>
-
-        <!-- SCHEMES (COLUMNS ONLY) -->
-        <div id="schemes" class="section">
-            <h2>Government Schemes</h2>
-            <div class="columns">
-                <div class="col">Scheme Name</div>
-                <div class="col">Department</div>
-                <div class="col">Eligibility</div>
-                <div class="col">Benefits</div>
-                <div class="col">Apply Link</div>
-            </div>
-        </div>
-
-        <!-- TIPS (COLUMNS ONLY) -->
-        <div id="tips" class="section">
-            <h2>Farming Tips</h2>
-            <div class="columns">
-                <div class="col">Tip Category</div>
-                <div class="col">Crop Type</div>
-                <div class="col">Season</div>
-                <div class="col">Recommended Practice</div>
-            </div>
-        </div>
-
     </div>
 </div>
 
-<script>
+<!-- ONDC SELLING -->
+<div id="ondc" class="section">
+    <h2>🛒 Sell Your Crops on ONDC</h2>
 
+    <h3>➕ Add Crop for Sale</h3>
+    <input type="text" id="cropName" placeholder="Crop Name">
+    <input type="number" id="price" placeholder="Price (₹/kg)">
+    <input type="text" id="location" placeholder="Village / Market">
+    <button onclick="addCrop()">Publish to ONDC</button>
+
+    <h3 style="margin-top:30px;">📦 Your ONDC Listings</h3>
+
+    <div class="columns">
+        <div class="col">Crop</div>
+        <div class="col">Price</div>
+        <div class="col">Location</div>
+        <div class="col">Status</div>
+    </div>
+
+    <div class="columns" id="ondcList"></div>
+</div>
+
+<!-- WEATHER -->
+<div id="weather" class="section">
+    <h2>🌦 Live Weather Information</h2>
+
+    <input type="text" id="city" placeholder="Enter Village / City">
+    <button onclick="getWeather()">Get Weather</button>
+
+    <div id="weatherResult" style="margin-top:20px;font-size:18px;"></div>
+</div>
+
+
+<!-- MANDI -->
+<div id="mandi" class="section">
+    <h2>📈 Live Mandi Rates</h2>
+
+    <input type="text" id="mandiCrop" placeholder="Enter Crop Name (e.g. Rice)">
+    <input type="text" id="mandiMarket" placeholder="Enter Market / District">
+    <button onclick="getMandiRates()">Get Rates</button>
+
+    <div id="mandiResult" style="margin-top:20px;"></div>
+</div>
+
+
+<!-- SCHEMES -->
+<div id="schemes" class="section">
+    <h2>🏛 Government Schemes</h2>
+    <p>PM-KISAN, Insurance, Subsidies</p>
+</div>
+
+</div>
+</div>
+
+<script>
 function showSection(id){
-    document.querySelectorAll(".section")
-        .forEach(sec => sec.classList.remove("active"));
+    document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
     document.getElementById(id).classList.add("active");
 }
 
-function openFromDashboard(id){
-    showSection(id);
-}
-
 function logout(){
-    if(confirm("Are you sure you want to logout?")){
-        window.location.href = "login.html";
-    }
+    alert("Logged out successfully");
 }
 
+/* ONDC SELL → DATABASE */
+function addCrop(){
+    const crop = document.getElementById("cropName").value;
+    const price = document.getElementById("price").value;
+    const location = document.getElementById("location").value;
+
+    if(!crop || !price || !location){
+        alert("Please fill all details");
+        return;
+    }
+
+    const fd = new FormData();
+    fd.append("crop", crop);
+    fd.append("price", price);
+    fd.append("location", location);
+
+    fetch("save_crop.php", {
+        method: "POST",
+        body: fd
+    })
+    .then(res => res.text())
+    .then(res => {
+        if(res === "success"){
+            loadONDCListings();
+            cropName.value = price.value = location.value = "";
+        } else {
+            alert("Failed to publish on ONDC");
+        }
+    });
+}
+
+/* FETCH FARMER’S ONDC LISTINGS */
+function loadONDCListings(){
+    fetch("get_crops.php")
+    .then(res => res.json())
+    .then(data => {
+        const list = document.getElementById("ondcList");
+        list.innerHTML = "";
+        data.forEach(item => {
+            list.innerHTML += `
+                <div class="col">${item.crop_name}</div>
+                <div class="col">₹${item.price}</div>
+                <div class="col">${item.location}</div>
+                <div class="col">${item.status}</div>
+            `;
+        });
+    });
+}
+
+/* AUTO LOAD ON PAGE OPEN */
+loadONDCListings();
 </script>
+
+<script>
+const WEATHER_API_KEY = "4d6c91dfeeb5e3c96f2899b35fdae30d"; // ← add key here
+
+function getWeather(){
+    const city = document.getElementById("city").value;
+    if(!city){
+        alert("Enter city or village");
+        return;
+    }
+
+    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${WEATHER_API_KEY}`)
+    .then(res => res.json())
+    .then(data => {
+        if(data.cod !== 200){
+            document.getElementById("weatherResult").innerHTML = "❌ Location not found";
+            return;
+        }
+
+        document.getElementById("weatherResult").innerHTML = `
+            🌡 Temperature: <b>${data.main.temp} °C</b><br>
+            🌧 Weather: <b>${data.weather[0].description}</b><br>
+            💧 Humidity: <b>${data.main.humidity}%</b><br>
+            💨 Wind Speed: <b>${data.wind.speed} m/s</b>
+        `;
+    })
+    .catch(() => {
+        document.getElementById("weatherResult").innerHTML = "⚠️ Unable to fetch weather";
+    });
+}
+</script>
+
+<script>
+const MANDI_API_KEY = "579b464db66ec23bdd000001cdd3946e44ce4aad7209ff7b23ac571b";
+
+function getMandiRates(){
+    const crop = document.getElementById("mandiCrop").value.trim();
+    const market = document.getElementById("mandiMarket").value.trim();
+
+    if(!crop || !market){
+        alert("Enter crop and market");
+        return;
+    }
+
+    const url =
+      "https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070" +
+      "?api-key=" + MANDI_API_KEY +
+      "&format=json" +
+      "&limit=1" +
+      "&filters[commodity]=" + encodeURIComponent(crop) +
+      "&filters[market]=" + encodeURIComponent(market);
+
+    fetch(url)
+    .then(res => res.json())
+    .then(data => {
+        if (!data.records || data.records.length === 0) {
+            document.getElementById("mandiResult").innerHTML =
+                "❌ No mandi data found for given input";
+            return;
+        }
+
+        const r = data.records[0];
+
+        document.getElementById("mandiResult").innerHTML = `
+            <div style="background:#e8f5e9;padding:15px;border-radius:12px;">
+                🏪 <b>Market:</b> ${r.market}<br>
+                🌾 <b>Commodity:</b> ${r.commodity}<br>
+                ⬇ <b>Min Price:</b> ₹${r.min_price}<br>
+                🔄 <b>Modal Price:</b> ₹${r.modal_price}<br>
+                ⬆ <b>Max Price:</b> ₹${r.max_price}<br>
+                📅 <b>Date:</b> ${r.arrival_date}<br>
+                📍 <b>District:</b> ${r.district}, ${r.state}
+            </div>
+        `;
+    })
+    .catch(err => {
+        console.error(err);
+        document.getElementById("mandiResult").innerHTML =
+            "⚠️ Error fetching mandi data";
+    });
+}
+</script>
+
+
+
 </body>
 </html>

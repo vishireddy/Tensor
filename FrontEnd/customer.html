@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Customer Dashboard | AgriHelp</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <style>
+    :root {
+      --green-dark: #166534;
+      --green-main: #22c55e;
+      --green-light: #dcfce7;
+      --text-dark: #14532d;
+      --danger: #dc2626;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      display: flex;
+      background: var(--green-light);
+      color: var(--text-dark);
+    }
+
+    /* ---------- Sidebar ---------- */
+    .sidebar {
+      width: 240px;
+      height: 100vh;
+      background: var(--green-dark);
+      color: white;
+      padding: 25px;
+      position: fixed;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar h2 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .sidebar a {
+      display: block;
+      padding: 12px;
+      margin-bottom: 12px;
+      background: rgba(255,255,255,0.15);
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .sidebar a:hover,
+    .sidebar a.active {
+      background: var(--green-main);
+    }
+
+    .logout {
+      margin-top: auto;
+      background: var(--danger) !important;
+      text-align: center;
+    }
+
+    .logout:hover {
+      background: #b91c1c !important;
+    }
+
+    /* ---------- Main ---------- */
+    .main {
+      margin-left: 240px;
+      padding: 30px;
+      width: 100%;
+    }
+
+    .section {
+      display: none;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    }
+
+    .price {
+      font-weight: bold;
+      margin: 10px 0;
+      color: #065f46;
+    }
+
+    button {
+      margin-top: 10px;
+      padding: 10px 18px;
+      background: var(--green-main);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #16a34a;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    .post {
+      border-left: 5px solid var(--green-main);
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h2>🌾 AgriHelp</h2>
+
+    <a class="active" onclick="showSection('buy', this)">Buy Products</a>
+    <a onclick="showSection('orders', this)">My Orders</a>
+    <a onclick="showSection('community', this)">Community</a>
+    <a onclick="showSection('profile', this)">Profile</a>
+
+    <!-- Logout Button -->
+    <a class="logout" onclick="logout()">🚪 Logout</a>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main">
+
+    <!-- BUY PRODUCTS -->
+    <div id="buy" class="section active">
+      <h1>🛒 Buy Products</h1>
+
+      <h3>🌱 Seeds</h3>
+      <div class="grid">
+        <div class="card">
+          <h4>Hybrid Tomato Seeds</h4>
+          <p class="price">₹120</p>
+          <button>Buy Now</button>
+        </div>
+        <div class="card">
+          <h4>Paddy Seeds (IR-64)</h4>
+          <p class="price">₹300</p>
+          <button>Buy Now</button>
+        </div>
+      </div>
+
+      <br>
+
+      <h3>🧪 Fertilizers</h3>
+      <div class="grid">
+        <div class="card">
+          <h4>Urea</h4>
+          <p class="price">₹270</p>
+          <button>Buy Now</button>
+        </div>
+        <div class="card">
+          <h4>Organic Compost</h4>
+          <p class="price">₹180</p>
+          <button>Buy Now</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MY ORDERS -->
+    <div id="orders" class="section">
+      <h1>📦 My Orders</h1>
+
+      <div class="card">
+        <h3>Hybrid Tomato Seeds</h3>
+        <p>Order ID: #1023</p>
+        <p>Status: Delivered</p>
+      </div>
+
+      <div class="card">
+        <h3>Drip Irrigation Kit</h3>
+        <p>Order ID: #1027</p>
+        <p>Status: In Transit</p>
+      </div>
+    </div>
+
+    <!-- COMMUNITY -->
+    <div id="community" class="section">
+      <h1>💬 Community</h1>
+
+      <div class="card">
+        <textarea rows="3" placeholder="Ask your farming question..."></textarea>
+        <button>Post</button>
+      </div>
+
+      <br>
+
+      <div class="card post">
+        <h4>Best fertilizer for cotton?</h4>
+        <p>— Farmer Raju</p>
+      </div>
+
+      <div class="card post">
+        <h4>How often to irrigate paddy?</h4>
+        <p>— Farmer Meena</p>
+      </div>
+    </div>
+
+    <!-- PROFILE -->
+    <div id="profile" class="section">
+      <h1>👤 My Profile</h1>
+
+      <div class="card" style="max-width:500px;">
+        <input type="text" value="Farmer Ramesh">
+        <input type="text" value="Nizamabad">
+        <input type="text" value="9876543210">
+        <button>Update Profile</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    function showSection(id, element) {
+      document.querySelectorAll('.section').forEach(sec => {
+        sec.classList.remove('active');
+      });
+
+      document.querySelectorAll('.sidebar a').forEach(link => {
+        link.classList.remove('active');
+      });
+
+      document.getElementById(id).classList.add('active');
+      element.classList.add('active');
+    }
+
+    function logout() {
+      if (confirm("Are you sure you want to logout?")) {
+        window.location.href = "index.html"; // change if needed
+      }
+    }
+  </script>
+
+</body>
+</html>

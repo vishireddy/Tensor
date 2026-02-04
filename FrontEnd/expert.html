@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Expert Dashboard | AgriHelp</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <style>
+    :root {
+      --green-dark: #166534;
+      --green-main: #22c55e;
+      --green-light: #dcfce7;
+      --text-dark: #14532d;
+      --danger: #dc2626;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      display: flex;
+      background: var(--green-light);
+      color: var(--text-dark);
+    }
+
+    /* ---------- Sidebar ---------- */
+    .sidebar {
+      width: 240px;
+      height: 100vh;
+      background: var(--green-dark);
+      color: white;
+      padding: 25px;
+      position: fixed;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar h2 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .sidebar a {
+      display: block;
+      padding: 12px;
+      margin-bottom: 12px;
+      background: rgba(255,255,255,0.15);
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .sidebar a:hover,
+    .sidebar a.active {
+      background: var(--green-main);
+    }
+
+    /* Logout button */
+    .logout {
+      margin-top: auto;
+      background: var(--danger) !important;
+      text-align: center;
+    }
+
+    .logout:hover {
+      background: #b91c1c !important;
+    }
+
+    /* ---------- Main ---------- */
+    .main {
+      margin-left: 240px;
+      padding: 30px;
+      width: 100%;
+    }
+
+    .section {
+      display: none;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    }
+
+    .query {
+      border-left: 5px solid var(--green-main);
+      padding-left: 15px;
+      margin-bottom: 15px;
+    }
+
+    textarea, input {
+      width: 100%;
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      background: var(--green-main);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #16a34a;
+    }
+
+    .post {
+      border-left: 4px solid var(--green-main);
+      padding-left: 15px;
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h2>🌾 AgriHelp</h2>
+
+    <a class="active" onclick="showSection('queries', this)">Farmer Queries</a>
+    <a onclick="showSection('blog', this)">Write Blog</a>
+    <a onclick="showSection('tutorial', this)">Upload Tutorial</a>
+    <a onclick="showSection('forum', this)">Community Forum</a>
+
+    <!-- Logout -->
+    <a class="logout" onclick="logout()">🚪 Logout</a>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main">
+
+    <!-- FARMER QUERIES -->
+    <div id="queries" class="section active">
+      <h1>Expert Console</h1>
+      <p>Help farmers solve agricultural challenges 🌱</p>
+
+      <div class="card">
+        <h2>Urgent Farmer Queries</h2>
+
+        <div class="query">
+          <h3>Yellow spots on tomato leaves</h3>
+          <p>Asked by Ramesh | 2 hours ago</p>
+          <textarea rows="3" placeholder="Write your expert advice..."></textarea>
+          <button>Send Advice</button>
+        </div>
+
+        <div class="query">
+          <h3>Best fertilizer for paddy this season?</h3>
+          <p>Asked by Suresh | 5 hours ago</p>
+          <textarea rows="3" placeholder="Write your expert advice..."></textarea>
+          <button>Send Advice</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- WRITE BLOG -->
+    <div id="blog" class="section">
+      <h1>📝 Write Blog</h1>
+
+      <div class="card" style="max-width:800px;">
+        <input type="text" placeholder="Blog Title">
+        <input type="text" placeholder="Category (Crop / Pest / Soil)">
+        <textarea rows="8" placeholder="Write your blog content here..."></textarea>
+        <button>Publish Blog</button>
+      </div>
+    </div>
+
+    <!-- UPLOAD TUTORIAL -->
+    <div id="tutorial" class="section">
+      <h1>🎥 Upload Tutorial</h1>
+
+      <div class="card" style="max-width:700px;">
+        <input type="text" placeholder="Tutorial Title">
+        <textarea rows="4" placeholder="Short description of the tutorial"></textarea>
+        <input type="file">
+        <button>Upload Tutorial</button>
+      </div>
+    </div>
+
+    <!-- COMMUNITY FORUM -->
+    <div id="forum" class="section">
+      <h1>💬 Community Forum</h1>
+
+      <div class="card">
+        <textarea rows="3" placeholder="Ask a farming question..."></textarea>
+        <button>Post Question</button>
+      </div>
+
+      <div class="card post">
+        <h4>Best organic pesticide for vegetables?</h4>
+        <p>— Farmer Anil</p>
+      </div>
+
+      <div class="card post">
+        <h4>How often should drip irrigation be used?</h4>
+        <p>— Farmer Meena</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    function showSection(id, element) {
+      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
+
+      document.getElementById(id).classList.add('active');
+      element.classList.add('active');
+    }
+
+    function logout() {
+      if (confirm("Are you sure you want to logout?")) {
+        sessionStorage.clear();   // future backend use
+        window.location.replace("index.html");
+      }
+    }
+  </script>
+
+</body>
+</html>
